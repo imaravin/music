@@ -3,7 +3,6 @@ package tk.aravinth.music;
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,21 +14,21 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import java.io.File;
 import android.net.Uri;
 
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
+
 
 public class MusicMain extends AppCompatActivity
 {
     RecyclerView recyclerView;
     List<String> songs=new ArrayList<>();
     SongsAdapter adapter;
-
+    boolean play=false;
+    public static int current=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,12 +40,24 @@ public class MusicMain extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                byte[] bytes=new byte[10];
-                new Random().nextBytes(bytes);
-                songs.add(0,new String(bytes));
-                adapter.notifyDataSetChanged();
+                if(songs.size()>0)
+                {
+                    if(!play)
+                    {
+                        Snackbar.make(view, R.string.playString, Snackbar.LENGTH_SHORT)
+                                .setAction(R.string.actionText, null).show();
+
+                        SongsAdapter.playSong(current);
+                        play=true;
+                    }
+                    else
+                    {
+                        Snackbar.make(view, R.string.pauseString, Snackbar.LENGTH_SHORT)
+                                .setAction(R.string.actionText, null).show();
+                        SongsAdapter.mediaPlayer.pause();
+                        play=false;
+                    }
+                }
             }
         });
 
@@ -58,7 +69,13 @@ public class MusicMain extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
+                Snackbar.make(v, R.string.shuffleString, Snackbar.LENGTH_SHORT)
+                        .setAction(R.string.actionText, null).show();
                 Collections.shuffle(songs);
+                adapter.notifyDataSetChanged();
+                current=0;
+                play=true;
+                SongsAdapter.playSong(current);
             }
         });
 
@@ -67,24 +84,9 @@ public class MusicMain extends AppCompatActivity
         recyclerView.setLayoutManager(layoutManager);
         adapter = new SongsAdapter(songs);
         recyclerView.setAdapter(adapter);
-//        findSongs(Environment.getRootDirectory());
         find();
         adapter.notifyDataSetChanged();
 
-    }
-
-    private void findSongs(File sdcard)
-    {
-        if(sdcard==null)
-            return;
-        File[] files=sdcard.listFiles();
-        if(files == null)
-            return;
-        for(File file:files)
-            if(!file.isDirectory())
-                songs.add(file.getName());
-        else
-                findSongs(file);
     }
 
     @Override
@@ -102,9 +104,6 @@ public class MusicMain extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
