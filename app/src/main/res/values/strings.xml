@@ -3,5 +3,4 @@
     <string name="shuffleString">Shuffling...</string>
     <string name="playString">Playing...</string>
     <string name="actionText">Action</string>
-    <string name="pauseString">Pause</string>
 </resources>

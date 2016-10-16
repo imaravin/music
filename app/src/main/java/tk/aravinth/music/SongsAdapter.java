@@ -20,7 +20,6 @@ import java.util.List;
 public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.SongViewHolder>
 {
     static List songs;
-    static MediaPlayer mediaPlayer=new MediaPlayer();
     public SongsAdapter(List list)
     {
         songs=list;
@@ -46,9 +45,12 @@ public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.SongViewHold
             {
 
                 File file=new File(songs.get(position).toString());
-                MusicMain.current=position;
-                playSong(MusicMain.current);
                 Snackbar.make(v,"Playing "+file.getName(),Snackbar.LENGTH_SHORT).show();
+                MusicMain.setSongDetails(position);
+                MusicMain.play=true;
+                MusicMain.setIconAndPlay(v.getResources());
+                MusicMain.play=false;
+
 
             }
         });
@@ -74,21 +76,5 @@ public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.SongViewHold
 
         }
     }
-    public static void playSong(int postion)
-    {
-       if(songs.size()>0)
-       {
-           try
-           {
-               mediaPlayer.reset();
-               mediaPlayer.setDataSource(songs.get(postion).toString());
-               mediaPlayer.prepare();
-               mediaPlayer.start();
 
-           } catch (IOException e)
-           {
-               e.printStackTrace();
-           }
-       }
-    }
 }
