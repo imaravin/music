@@ -57,7 +57,6 @@ public class MusicMain extends AppCompatActivity
                 {
                     if(play)
                     {
-                        Snackbar.make(view, R.string.playString, Snackbar.LENGTH_SHORT).setAction(R.string.actionText, null).show();
                         setSongDetails(current);
                         setIconAndPlay(getResources());
                         play=false;
@@ -81,6 +80,7 @@ public class MusicMain extends AppCompatActivity
                 Snackbar.make(v, R.string.shuffleString, Snackbar.LENGTH_SHORT).setAction(R.string.actionText, null).show();
                 Collections.shuffle(songs);
                 adapter.notifyDataSetChanged();
+                recyclerView.smoothScrollToPosition(0);
                 current=0;
                 play=true;
                 setSongDetails(current);
@@ -141,6 +141,10 @@ public class MusicMain extends AppCompatActivity
 
             }
         }
+        songs.add("ADD");
+        songs.add("ADD");
+        songs.add("ADD");
+        songs.add("ADD");
         cur.close();
 
     }

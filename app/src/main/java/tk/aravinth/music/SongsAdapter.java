@@ -37,15 +37,13 @@ public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.SongViewHold
     {
         String song= (String) songs.get(position);
         File file=new File(song);
-        holder.songname.setText(file.getName());
+        holder.songname.setText("\n"+file.getName());
         holder.itemView.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
 
-                File file=new File(songs.get(position).toString());
-                Snackbar.make(v,"Playing "+file.getName(),Snackbar.LENGTH_SHORT).show();
                 MusicMain.setSongDetails(position);
                 MusicMain.play=true;
                 MusicMain.setIconAndPlay(v.getResources());
