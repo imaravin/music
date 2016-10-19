@@ -141,10 +141,6 @@ public class MusicMain extends AppCompatActivity
 
             }
         }
-        songs.add("ADD");
-        songs.add("ADD");
-        songs.add("ADD");
-        songs.add("ADD");
         cur.close();
 
     }

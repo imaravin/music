@@ -36,8 +36,15 @@ public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.SongViewHold
     public void onBindViewHolder(SongViewHolder holder, final int position)
     {
         String song= (String) songs.get(position);
-        File file=new File(song);
-        holder.songname.setText("\n"+file.getName());
+        int index=song.lastIndexOf('/');
+        if(index<0)
+        {
+            holder.songname.setText("\n"+song.substring(0));
+        }
+        else
+        {
+            holder.songname.setText("\n"+song.substring(index+1));
+        }
         holder.itemView.setOnClickListener(new View.OnClickListener()
         {
             @Override
